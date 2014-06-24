@@ -1,0 +1,45 @@
+
+///////////////////////////////////////////////////////////////////////////////
+Here is a description of the firmware provided in this release. All are 
+Version 2.1
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+-------------------------------------------------------------------------------
+Name		     | Description
+-------------------------------------------------------------------------------
+
+Passthrough -         This takes in any filename when calling the script and 
+		      applies it as firmware. 
+	              This is used to support out of band, or special releases. 
+		      ie (./ducky.sh <file>)
+
+Standard -            This is the stock firmware. Use this to return your ducky 
+		      to the original specs. 
+
+TwinDuck -            Loads both HiD and Mass storage capabilities. 
+	              Speed improvement makes Ducky MSC(Mass Storage) 2x faster.
+	              Speed Tests: average read/write 150-155KB/s
+	              (Previous results were 88KB/s, results are from a working 
+		      sdcard supplied with the Ducky)
+
+DetourDuck_Version2 - Same as version 1 - exception User controls VID and PID of 
+		      USB Stack through a binary file. 
+		      The vid & pid of the USB stack are set from a binary file 
+		      vidpid.bin on the root of the sdcard.
+		      Additionally, added interrupt - so payloads 2,3,4 trigger on 
+		      keypress instead of Ducky's GPIO button
+			*inject2.bin - Numlock
+			*inject3.bin - Capslock
+			*inject4.bin - Scrolllock
+
+Twin+DetourDuckv2 -   Produced due to demand: a merge of the multi-duck, and the 
+		      twin-duck firmwares.
+		      Duck will initially mount as Mass Storage Device.
+			*Numlock  - triggers payload 1 (inject.bin)
+			*Capslock - triggers payload 2 (inject2.bin)
+		      Due to memory restrictions, as both payloads are loaded into 
+		      Ducky memory - you are limited to 2048-Bytes 
+		      of instructions per inject-payload!
+		      Also only one payload can be triggered, so you have a choice 
+		      payload A or payload B. NOT BOTH!!!
+
+Composite_Duck_4cap.hex - Type CAPS_LOCK 4x to trigger the PAYLOAD

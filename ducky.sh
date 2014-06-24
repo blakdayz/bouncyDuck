@@ -22,7 +22,7 @@ DetourDuckVersion2='m_duck_v2.hex'
 Passthrough=$1
 function StartMenu {
 PS3='Please enter your choice [hit return to see options again]:'
-options=("Passthrough Standard TwinDuck-Reloaded(Composite) FATDuck-MassStorage DetourDuck-Version2 Twin+DetourDuckv2 Scripts Quit")
+options=("Passthrough Standard TwinDuck-Reloaded(Composite) FATDuck-MassStorage DetourDuck-Version2 Twin+DetourDuckv2 FirmwareInfoz Scripts Quit")
 select opt in $options
 do	
     case $opt in
@@ -128,6 +128,9 @@ do
             sudo dfu-programmer $firmwareModel reset 
 	    echo Done, please review log for more information.
          ;;
+	 "FirmwareInfoz")
+	cat firmwareInfoz.txt | more
+	;;
 	"Scripts")
 	   ScriptsMenu
 	;;
