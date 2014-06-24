@@ -80,7 +80,7 @@ do
          ;;
 	 "Passthrough")
 	 printf "\n"
-	 echo "You have selected to use whatever the fuck you passed in Good luck. Using file $Passthrough"
+	 echo "You have selected to use whatever the fuck you passed in. Good luck. Using file $Passthrough"
 	 printf "\n"
 	 echo "Creating Backup." 
             [[ -f "dump.bin" ]] && rm -f "dump.bin"
