@@ -20,9 +20,10 @@ twinDuckFirmwareName='c_duck_v2.1.hex'
 twinAndDetourDuck='cm_duck.hex'
 FatDuck='USB_v2.1.hex'
 DetourDuckVersion2='m_duck_v2.hex'
+Passthrough=$1
 function StartMenu {
 PS3='Please enter your choice [hit return to see options again]:'
-options=("Standard TwinDuck-Reloaded(Composite) FATDuck-MassStorage Quit")
+options=("Passthrough Standard TwinDuck-Reloaded(Composite) FATDuck-MassStorage Quit")
 select opt in $options
 do	
     case $opt in
@@ -73,6 +74,23 @@ do
 	    sudo dfu-programmer $firmwareModel erase 
             echo Done. Flashing $firmwareModel with $FatDuck
 	    sudo dfu-programmer $firmwareModel flash --suppress-bootloader-mem $FatDuck
+	    echo "Done. Resetting device for first use..."
+            sudo dfu-programmer $firmwareModel reset 
+	    echo Done, please review log for more information.
+         ;;
+	 "Passthrough")
+	 printf "\n"
+	 echo "You have selected to use whatever the fuck you passed in Good luck. Using file $Passthrough"
+	 printf "\n"
+	 echo "Creating Backup." 
+            [[ -f "dump.bin" ]] && rm -f "dump.bin"
+ 	    sudo dfu-programmer $firmwareModel dump >dump.bin
+	    ls -l dump.bin
+	    echo Done creating backup. Erasing device...
+	    echo Erasing current firmware...
+	    sudo dfu-programmer $firmwareModel erase 
+            echo Done. Flashing $firmwareModel with $Passthrough
+	    sudo dfu-programmer $firmwareModel flash --suppress-bootloader-mem $Passthrough
 	    echo "Done. Resetting device for first use..."
             sudo dfu-programmer $firmwareModel reset 
 	    echo Done, please review log for more information.
