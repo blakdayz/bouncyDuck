@@ -13,7 +13,6 @@ echo "     \"fuck you, pass me that beer,        "
 echo  "       ...and you dropped this...\"       "
 echo "-------------------------------------------"
 echo " "	
-firmwareModel=0
 firmwareModel='at32uc3b1256' 
 standardFirmwareName='duck_v2.1.hex'
 twinDuckFirmwareName='c_duck_v2.1.hex'
@@ -23,7 +22,7 @@ DetourDuckVersion2='m_duck_v2.hex'
 Passthrough=$1
 function StartMenu {
 PS3='Please enter your choice [hit return to see options again]:'
-options=("Passthrough Standard TwinDuck-Reloaded(Composite) FATDuck-MassStorage Quit")
+options=("Passthrough Standard TwinDuck-Reloaded(Composite) FATDuck-MassStorage DetourDuck-Version2 Twin+DetourDuckv2 Scripts Quit")
 select opt in $options
 do	
     case $opt in
@@ -78,6 +77,40 @@ do
             sudo dfu-programmer $firmwareModel reset 
 	    echo Done, please review log for more information.
          ;;
+	 "DetourDuck-Version2")
+	 printf "\n"
+	 echo "You have selected to use the Detour Duck Version 2 firmware. Using file $DetourDuckVersion2"
+	 printf "\n"
+	 echo "Creating Backup." 
+            [[ -f "dump.bin" ]] && rm -f "dump.bin"
+ 	    sudo dfu-programmer $firmwareModel dump >dump.bin
+	    ls -l dump.bin
+	    echo Done creating backup. Erasing device...
+	    echo Erasing current firmware...
+	    sudo dfu-programmer $firmwareModel erase 
+            echo Done. Flashing $firmwareModel with $DetourDuckVersion2
+	    sudo dfu-programmer $firmwareModel flash --suppress-bootloader-mem $DetourDuckVersion2
+	    echo "Done. Resetting device for first use..."
+            sudo dfu-programmer $firmwareModel reset 
+	    echo Done, please review log for more information.
+	 ;;
+	 "Twin+DetourDuckv2")
+	 printf "\n"
+	 echo "You have selected to use the Twin Duck + Detour Duck Version 2 firmware. Using file $twinAndDetourDuck"
+	 printf "\n"
+	 echo "Creating Backup." 
+            [[ -f "dump.bin" ]] && rm -f "dump.bin"
+ 	    sudo dfu-programmer $firmwareModel dump >dump.bin
+	    ls -l dump.bin
+	    echo Done creating backup. Erasing device...
+	    echo Erasing current firmware...
+	    sudo dfu-programmer $firmwareModel erase 
+            echo Done. Flashing $firmwareModel with $twinAndDetourDuck
+	    sudo dfu-programmer $firmwareModel flash --suppress-bootloader-mem $twinAndDetourDuck
+	    echo "Done. Resetting device for first use..."
+            sudo dfu-programmer $firmwareModel reset 
+	    echo Done, please review log for more information.
+	 ;;
 	 "Passthrough")
 	 printf "\n"
 	 echo "You have selected to use whatever the fuck you passed in. Good luck. Using file $Passthrough"
@@ -95,6 +128,9 @@ do
             sudo dfu-programmer $firmwareModel reset 
 	    echo Done, please review log for more information.
          ;;
+	"Scripts")
+	   ScriptsMenu
+	;;
         "Quit")
             break
             ;;
@@ -102,8 +138,29 @@ do
     esac
 done
 }
-
+function ScriptsMenu {
+PS3='Please enter your choice [hit return to see options again]>scripts>:'
+options=("Standard-Scripts TwinDuck(Composite)-Scripts")
+printf "\n"
+echo "**This area is under development, and should *absolutely* be expected to fail miserably at this point in the game.**"
+printf "\n"
+select opt in $options
+do	
+    case $opt in
+        "Standard-Scripts")
+	echo "You selected 'Standard Scripts'"	
+	 ;;
+	"TwinDuck(Composite)-Scripts")
+	echo "You selected 'TwinDuck Composite Scripts'"
+	;;
+        "Quit")
+            break
+            ;;
+        *) echo Invalid Option Selected;;
+    esac
+done
+}
 StartMenu
 
 
-
+	
