@@ -124,7 +124,7 @@ do
 	    sudo dfu-programmer $firmwareModel erase 
             echo Done. Flashing $firmwareModel with $Passthrough
 	    sudo dfu-programmer $firmwareModel flash --suppress-bootloader-mem $Passthrough
-	    echo "Done. Resetting device for first use..."
+	    echo Done. Resetting device for first use...
             sudo dfu-programmer $firmwareModel reset 
 	    echo Done, please review log for more information.
          ;;
@@ -142,21 +142,26 @@ do
 done
 }
 function ScriptsMenu {
-PS3='Please enter your choice [hit return to see options again]>scripts>:'
-options=("Standard-Scripts TwinDuck(Composite)-Scripts")
+options=("Launch_simple-ducky Update_simple-ducky Install-simple-ducky Back")
 printf "\n"
 echo "**This area is under development, and should *absolutely* be expected to fail miserably at this point in the game.**"
 printf "\n"
 select opt in $options
 do	
     case $opt in
-        "Standard-Scripts")
-	echo "You selected 'Standard Scripts'"	
+        "Launch_simple-ducky")
+	echo "You selected to launch simple-ducky...attempting..."
+	sudo simple-ducky
 	 ;;
-	"TwinDuck(Composite)-Scripts")
-	echo "You selected 'TwinDuck Composite Scripts'"
+	"Update_simple-ducky")
+	echo "Updating simple-ducky via git...attempting..."
+	sudo ./installSimpleDucky.sh
 	;;
-        "Quit")
+	"Install-simple-ducky")
+	echo "Installing simple-duck via git...attempting.."
+	sudo ./installSimpleDucky.sh
+	;;
+        "Back")
             break
             ;;
         *) echo Invalid Option Selected;;
